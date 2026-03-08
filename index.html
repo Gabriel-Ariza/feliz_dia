@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Isa 🌸</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --text-color: #ff1493;
+            --accent-color: #ff69b4;
+            --light-color: #ffc0cb;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: opacity 1.5s ease-out;
+        }
+
+        body.transicion {
+            opacity: 0;
+        }
+
+        #fondo-vector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('img/vector2.jpg');
+            background-size: cover;
+            background-position: left center;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #instrucciones {
+            position: absolute;
+            z-index: 10;
+            color: var(--light-color);
+            pointer-events: none;
+            transition: opacity 0.5s;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+        }
+
+        #instrucciones h2 {
+            font-size: 3rem;
+            margin: 0;
+            color: #16213e;
+        }
+
+        #instrucciones p {
+            font-size: 1.2rem;
+            margin: 10px 0 0 0;
+        }
+
+        .flor {
+            position: absolute;
+            font-size: 3rem;
+            user-select: none;
+            animation: aparecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, flotar 3s ease-in-out infinite;
+            pointer-events: none;
+            filter: drop-shadow(0 0 8px rgba(255, 20, 147, 0.6));
+            z-index: 15;
+        }
+
+        @keyframes aparecer {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            100% { transform: scale(1) rotate(var(--rotacion)); opacity: 1; }
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #mensaje-final {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+            padding: 3rem 2rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.4), inset 0 0 30px rgba(255, 105, 180, 0.1);
+            z-index: 100;
+            width: 85%;
+            max-width: 450px;
+            border: 2px solid var(--text-color);
+            animation: aparecer-mensaje 0.8s ease-out;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes aparecer-mensaje {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        h1 { color: var(--text-color); margin: 0 0 15px 0; font-size: 2rem; }
+        p { color: var(--light-color); line-height: 1.8; margin: 0; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+    <div id="fondo-vector"></div>
+
+    <div id="instrucciones">
+        <h2>Para Isa ✨</h2>
+        <p>toca muchas veces la pantalla...</p>
+    </div>
+
+    <div id="mensaje-final">
+        <h1>¡Feliz Día, Isa! 🌸</h1>
+        <p>Eres una mujer increíble, llena de luz y fuerza. Quería regalarte algo que nunca se marchitara. Que tu día sea tan especial como lo eres tú. ¡Espero que te guste!</p>
+    </div>
+
+    <script nonce="ramo-script">
+        const flores = ['🌸', '🌷', '🌹', '🌻', '🌺', '🌼', '✨'];
+        let contador = 0;
+        const limite = 9;
+
+        document.addEventListener('click', (e) => {
+            crearFlor(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            crearFlor(touch.clientX, touch.clientY);
+        });
+
+        function crearFlor(x, y) {
+            if (contador === 0) {
+                document.getElementById('instrucciones').style.opacity = '0';
+            }
+
+            const flor = document.createElement('div');
+            flor.className = 'flor';
+            flor.innerHTML = flores[Math.floor(Math.random() * flores.length)];
+            
+            const offset = 20;
+            flor.style.left = (x - 25) + 'px';
+            flor.style.top = (y - 25) + 'px';
+            
+            const rot = (Math.random() * 40 - 20) + 'deg';
+            flor.style.setProperty('--rotacion', rot);
+
+            document.body.appendChild(flor);
+            contador++;
+
+            if (contador === limite) {
+                setTimeout(() => {
+                    document.body.classList.add('transicion');
+                    setTimeout(() => {
+                        window.location.href = 'flores.html';
+                    }, 1500);
+                }, 500);
+            }
+        }
+/* 
+        function mostrarMensajeFinal() {
+            document.getElementById('mensaje-final').style.display = 'block';
+            
+            // Esperar 10 segundos y redirigir a flores.html
+            setTimeout(() => {
+                window.location.href = 'flores.html';
+            }, 10000);
+        } */
+    </script>
+</body>
+</html>
